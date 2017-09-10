@@ -40,10 +40,7 @@ router.use('/', wechat(config).text(function(message, req, res, next) {
       }
       break;
     default:
-      res.reply({
-        type: "text",
-        content: '服务器挂掉了，你的要求暂时无法满足……'
-      });
+        res.transfer2CustomerService();
       break;
   }
 }).image(function(message, req, res, next) {
@@ -127,6 +124,7 @@ router.use('/', wechat(config).text(function(message, req, res, next) {
         subInfo();
     }
     break;
+
     case "unsubscribe":
     {
         //unsubInfo();
@@ -149,29 +147,60 @@ router.use('/', wechat(config).text(function(message, req, res, next) {
   }
 
   function subInfo(){
-    res.reply({
-        type: "text",
-        content: "谢谢您关注环球易诊"
-    });
+    res.reply([
+        {
+        title: '环球易诊',
+        description: '海外突破性疗法的资讯、价格、适用性，国内治疗及后续随诊，我们提供一站式服务！',
+        picurl: 'http://mmbiz.qpic.cn/mmbiz_jpg/rXibKrBsdIjOr2j73SJ0LlkfHhSUGkMopA8Lm58vkm7UWnxlPI9Xkicme9PeibickbUIzsQPsjGcPFk0fAROckjib0Q/0?wx_fmt=jpeg',
+        url: 'http://mp.weixin.qq.com/s?__biz=MzU1MzI4ODAzMQ==&mid=100000005&idx=1&sn=74300138fa01e846af0e4fcfcd770a13&chksm=7bf469354c83e023000dd39a3454d5ba8653bdad39db808489f20fb2ed3c300a19d285c594b9#rd'
+        }
+    ]);
   };
-  
+  function sendAbout(){
+    res.reply([
+        {
+        title: '环球易诊',
+        description: '海外突破性疗法的资讯、价格、适用性，国内治疗及后续随诊，我们提供一站式服务！',
+        picurl: 'http://mmbiz.qpic.cn/mmbiz_jpg/rXibKrBsdIjOr2j73SJ0LlkfHhSUGkMopA8Lm58vkm7UWnxlPI9Xkicme9PeibickbUIzsQPsjGcPFk0fAROckjib0Q/0?wx_fmt=jpeg',
+        url: 'http://mp.weixin.qq.com/s?__biz=MzU1MzI4ODAzMQ==&mid=100000005&idx=1&sn=74300138fa01e846af0e4fcfcd770a13&chksm=7bf469354c83e023000dd39a3454d5ba8653bdad39db808489f20fb2ed3c300a19d285c594b9#rd'
+        }
+    ]);
+  };
+  function sendProcess(){
+    res.reply([
+        {
+        title: '服务流程',
+        description: '我们将用最快的速度，以最低的价格，把最好的突破性疗法交到您手上',
+        picurl: 'https://mmbiz.qlogo.cn/mmbiz_png/rXibKrBsdIjNm4phlgR2AGvwA6icOORyy5oPRZKdEgARvBfQQ0Hr80y16UorG68dfPWOf7QSAZc9icNx13dKAVZaQ/0?wx_fmt=png',
+        url: 'http://mp.weixin.qq.com/s?__biz=MzU1MzI4ODAzMQ==&mid=100000010&idx=1&sn=f24e1aa63f8cbb308c9d5b956d241996&chksm=7bf4693a4c83e02c2c052f6cc122e8c18f35ff93db33c604da3843f134f22e075e590e38ef18#rd'
+        }
+    ]);
+  };
   function clickMenu(){
     switch(message.EventKey){
         case "name1":
         {
           res.reply({
               type: "text",
-              content: message.EventKey
+              content: '正在努力整理中，请稍后再试'
           });
         }
         break;
         case "name2":
         {
-          res.reply({
-              type: "text",
-              content: message.EventKey
-          });
+            res.reply({
+                type: "text",
+                content: '正在努力整理中，请稍后再试'
+            });
         }
+        case "about":
+        {
+            sendAbout();
+        } 
+        case "process":
+        {
+            sendProcess();
+        }            
         break;
         default:
           res.reply({
@@ -181,7 +210,6 @@ router.use('/', wechat(config).text(function(message, req, res, next) {
         break;
     }
   };
-
 
 }).device_text(function(message, req, res, next) {
   // message为设备文本消息内容
